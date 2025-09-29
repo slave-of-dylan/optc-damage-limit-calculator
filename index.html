@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>OPTCダメージ補正計算ツール</title>
+  <title>トレクル ダメージ限界突破シミュレーター</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-50 text-gray-900">
@@ -101,7 +101,7 @@
     // 辞書
     const translations = {
       ja: {
-        title: "OPTCダメージ補正計算ツール",
+        title: "トレクル ダメージ限界突破シミュレーター",
         correctedTab: "補正ダメージ計算",
         actualTab: "実ダメージ計算",
         inputActual: "実ダメージ（兆）",
@@ -119,7 +119,7 @@
         phLimit: "例: 0.0 ~ 3.0"
       },
       en: {
-        title: "OPTC Damage Limit Calculator",
+        title: "OPTC Damage Limit Break Simulator",
         correctedTab: "Corrected Damage",
         actualTab: "Actual Damage",
         inputActual: "Actual Damage (trillions)",
@@ -143,6 +143,9 @@
     function switchLang(lang) {
       currentLang = lang;
       localStorage.setItem("lang", lang);
+
+      // タイトル
+      document.title = translations[lang].title;
       // テキスト
       document.querySelectorAll("[data-i18n]").forEach(el => {
         const key = el.getAttribute("data-i18n");
