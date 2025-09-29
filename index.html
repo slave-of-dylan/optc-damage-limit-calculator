@@ -35,7 +35,10 @@
              placeholder="例: 5"
              class="w-full px-3 py-2 mb-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
 
-      <label class="block text-sm font-medium mb-1" data-i18n="inputLimit">限界突破値</label>
+      <label class="block text-sm font-medium mb-1">
+        <span data-i18n="inputLimit">ダメージ限界突破値</span>
+        <a href="#" id="openModal" class="ml-2 text-blue-600 underline text-sm">ダメージ限界突破値とは？</a>
+      </label>
       <input type="number" id="limitInput1" step="0.1" min="0" max="3" data-i18n-placeholder="phLimit"
              placeholder="例: 0.0 ~ 3.0"
              class="w-full px-3 py-2 mb-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -58,7 +61,10 @@
              placeholder="例: 2.3"
              class="w-full px-3 py-2 mb-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
 
-      <label class="block text-sm font-medium mb-1" data-i18n="inputLimit">限界突破値</label>
+      <label class="block text-sm font-medium mb-1">
+        <span data-i18n="inputLimit">ダメージ限界突破値</span>
+        <a href="#" id="openModal2" class="ml-2 text-blue-600 underline text-sm">ダメージ限界突破値とは？</a>
+      </label>
       <input type="number" id="limitInput2" step="0.1" min="0" max="3" data-i18n-placeholder="phLimit"
              placeholder="例: 0.0 ~ 3.0"
              class="w-full px-3 py-2 mb-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -75,6 +81,19 @@
     </div>
   </div>
 
+  <!-- モーダル -->
+  <div id="modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white rounded-lg shadow-lg max-w-lg w-full p-4 relative">
+      <button id="closeModal" class="absolute top-2 right-2 text-gray-600 hover:text-black">✖</button>
+      <h2 class="text-lg font-bold mb-3">ダメージ限界突破値とは？</h2>
+      <img src="damage-limit-break-detail.png" alt="ダメージ限界突破の説明" class="mb-3 rounded">
+      <p class="text-sm text-gray-700">
+        ダメージ限界突破は、キャラクターレベルや属性・タイプごとの強化値を合計した数値で、
+        一味全体に効果を発揮します。最大で +3.0 まで上昇します。
+      </p>
+    </div>
+  </div>
+
   <script>
     // 辞書
     const translations = {
@@ -84,7 +103,7 @@
         actualTab: "実ダメージ計算",
         inputActual: "実ダメージ（兆）",
         inputCorrected: "補正ダメージ（兆）",
-        inputLimit: "限界突破値",
+        inputLimit: "ダメージ限界突破値",
         calc: "計算",
         correctedResult: "補正ダメージ: ",
         actualResult: "実ダメージ: ",
@@ -100,7 +119,7 @@
         actualTab: "Actual Damage",
         inputActual: "Actual Damage (trillions)",
         inputCorrected: "Corrected Damage (trillions)",
-        inputLimit: "Limit Break Value",
+        inputLimit: "Damage Limit Break Value",
         calc: "Calculate",
         correctedResult: "Corrected Damage: ",
         actualResult: "Actual Damage: ",
@@ -188,6 +207,23 @@
       }
       document.getElementById('actualResult').innerText =
         translations[currentLang].actualResult + calcActualDamage(corrected, limit).toFixed(8) + translations[currentLang].unit;
+    });
+
+    // モーダル制御
+    const modal = document.getElementById('modal');
+    document.getElementById('openModal').addEventListener('click', e => {
+      e.preventDefault();
+      modal.classList.remove('hidden');
+    });
+    document.getElementById('openModal2').addEventListener('click', e => {
+      e.preventDefault();
+      modal.classList.remove('hidden');
+    });
+    document.getElementById('closeModal').addEventListener('click', () => {
+      modal.classList.add('hidden');
+    });
+    modal.addEventListener('click', e => {
+      if (e.target === modal) modal.classList.add('hidden');
     });
   </script>
 </body>
