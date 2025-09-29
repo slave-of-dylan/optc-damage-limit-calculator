@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>ダメージ補正計算ツール</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f7f7f7;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+    }
+    .tabs {
+      display: flex;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #ccc;
+    }
+    .tab {
+      flex: 1;
+      text-align: center;
+      padding: 10px;
+      cursor: pointer;
+      background: #eee;
+    }
+    .tab.active {
+      background: white;
+      border-top: 2px solid #007acc;
+      border-left: 2px solid #007acc;
+      border-right: 2px solid #007acc;
+      border-bottom: 2px solid white;
+    }
+    .content {
+      display: none;
+      background: white;
+      padding: 20px;
+      border: 2px solid #007acc;
+      border-radius: 0 0 8px 8px;
+    }
+    .content.active {
+      display: block;
+    }
+    label {
+      display: block;
+      margin: 10px 0 5px;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      font-size: 14px;
+    }
+    button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      background: #007acc;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .result {
+      margin-top: 15px;
+      font-weight: bold;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <h1>ダメージ補正計算ツール</h1>
+
+  <div class="tabs">
+    <div class="tab active" data-tab="corrected">補正ダメージ計算</div>
+    <div class="tab" data-tab="actual">実ダメージ計算</div>
+  </div>
+
+  <div id="corrected" class="content active">
+    <label>実ダメージ（兆）:</label>
+    <input type="number" id="actualInput" step="any">
+    <label>限界突破値:</label>
+    <input type="number" id="limitInput1" step="any">
+    <button onclick="calculateCorrected()">計算</button>
+    <div id="correctedResult" class="result"></div>
+  </div>
+
+  <div id="actual" class="content">
+    <label>補正ダメージ（兆）:</label>
+    <input type="number" id="correctedInput" step="any">
+    <label>限界突破値:</label>
+    <input type="number" id="limitInput2" step="any">
+    <button onclick="calculateActual()">計算</button>
+    <div id="actualResult" class="result"></div>
+  </div>
+
+  <script>
+    // タブ切り替え処理
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById(tab.dataset.tab).classList.add('active');
+      });
+    });
+
+    // 補正ダメージ計算
+    function calculateCorrected() {
+      const actual = parseFloat(document.getElementById('actualInput').value);
+      const limit = parseFloat(document.getElementById('limitInput1').value);
+      if (isNaN(actual) || isNaN(limit)) {
+        document.getElementById('correctedResult').innerText = "入力してください。";
+        return;
+      }
+
+      const base = (-1 + Math.sqrt(1 + 4 * (1 + limit) * (actual - 1) / 5)) / 2;
+      const n = Math.floor(base);
+
+      const corrected = 1 + n
+        + ((actual - 1 - 5 * n * (n + 1)) / (1 + limit))
+          * (1 + limit) / (10 * (n + 1));
+
+      document.getElementById('correctedResult').innerText =
+        "補正ダメージ: " + corrected.toFixed(6) + " 兆";
+    }
+
+    // 実ダメージ計算
+    function calculateActual() {
+      const corrected = parseFloat(document.getElementById('correctedInput').value);
+      const limit = parseFloat(document.getElementById('limitInput2').value);
+      if (isNaN(corrected) || isNaN(limit)) {
+        document.getElementById('actualResult').innerText = "入力してください。";
+        return;
+      }
+
+      const n = Math.floor(corrected - 1);
+      const actual = 1
+        + 5 * n * (n + 1) / (1 + limit)
+        + 10 * (n + 1) / (1 + limit) * (corrected - 1 - n);
+
+      document.getElementById('actualResult').innerText =
+        "実ダメージ: " + actual.toFixed(6) + " 兆";
+    }
+  </script>
+</body>
+</html>
