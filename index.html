@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>ダメージ補正計算ツール（OPTc）</title>
+  <title>OPTCダメージ補正計算ツール</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-50 text-gray-900">
   <div class="max-w-2xl mx-auto p-6">
-    <h1 class="text-2xl font-bold text-center mb-6">ダメージ補正計算ツール（OPTc）</h1>
+    <h1 class="text-2xl font-bold text-center mb-6">OPTCダメージ補正計算ツール</h1>
 
     <!-- タブ -->
     <div class="flex space-x-2 mb-6 justify-center">
@@ -37,14 +37,9 @@
                 class="px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700">
           計算
         </button>
-        <button id="exampleBtn"
-                class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg shadow hover:bg-gray-300">
-          例を入力（334, 1.9）
-        </button>
       </div>
 
       <div id="correctedResult" class="result text-lg font-bold text-blue-700"></div>
-      <p class="text-xs text-gray-600 mt-2">※ Excel の ROUNDDOWN(...,0) と同じ挙動に合わせています</p>
     </div>
 
     <!-- 実ダメージ計算 -->
@@ -62,14 +57,9 @@
                 class="px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700">
           計算
         </button>
-        <button id="exampleBtn2"
-                class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg shadow hover:bg-gray-300">
-          例を入力（14.39785714, 1.9）
-        </button>
       </div>
 
       <div id="actualResult" class="result text-lg font-bold text-blue-700"></div>
-      <p class="text-xs text-gray-600 mt-2">※ 補正側の切り捨ても Excel と同じ挙動にしています</p>
     </div>
   </div>
 
@@ -125,18 +115,6 @@
       }
       document.getElementById('actualResult').innerText =
         "実ダメージ: " + calcActualDamage(corrected, limit).toFixed(8) + " 兆";
-    });
-
-    // サンプル入力
-    document.getElementById('exampleBtn').addEventListener('click', () => {
-      document.getElementById('actualInput').value = 334;
-      document.getElementById('limitInput1').value = 1.9;
-      document.getElementById('calcCorrectedBtn').click();
-    });
-    document.getElementById('exampleBtn2').addEventListener('click', () => {
-      document.getElementById('correctedInput').value = 14.39785714;
-      document.getElementById('limitInput2').value = 1.9;
-      document.getElementById('calcActualBtn').click();
     });
   </script>
 </body>
