@@ -31,11 +31,13 @@
     <!-- 補正ダメージ計算 -->
     <div id="tab-corrected" class="tab-content bg-white p-6 rounded-xl shadow-md">
       <label class="block text-sm font-medium mb-1" data-i18n="inputActual">実ダメージ（兆）</label>
-      <input type="number" id="actualInput" step="any" placeholder="例: 334"
+      <input type="number" id="actualInput" step="any" data-i18n-placeholder="phActual"
+             placeholder="例: 5"
              class="w-full px-3 py-2 mb-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
 
       <label class="block text-sm font-medium mb-1" data-i18n="inputLimit">限界突破値</label>
-      <input type="number" id="limitInput1" step="any" placeholder="例: 1.9"
+      <input type="number" id="limitInput1" step="0.1" min="0" max="3" data-i18n-placeholder="phLimit"
+             placeholder="例: 0.0 ~ 3.0"
              class="w-full px-3 py-2 mb-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
 
       <div class="flex space-x-3 mb-4">
@@ -52,11 +54,13 @@
     <!-- 実ダメージ計算 -->
     <div id="tab-actual" class="tab-content hidden bg-white p-6 rounded-xl shadow-md">
       <label class="block text-sm font-medium mb-1" data-i18n="inputCorrected">補正ダメージ（兆）</label>
-      <input type="number" id="correctedInput" step="any" placeholder="例: 14.39785714"
+      <input type="number" id="correctedInput" step="any" data-i18n-placeholder="phCorrected"
+             placeholder="例: 2.3"
              class="w-full px-3 py-2 mb-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
 
       <label class="block text-sm font-medium mb-1" data-i18n="inputLimit">限界突破値</label>
-      <input type="number" id="limitInput2" step="any" placeholder="例: 1.9"
+      <input type="number" id="limitInput2" step="0.1" min="0" max="3" data-i18n-placeholder="phLimit"
+             placeholder="例: 0.0 ~ 3.0"
              class="w-full px-3 py-2 mb-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
 
       <div class="flex space-x-3 mb-4">
@@ -85,7 +89,10 @@
         correctedResult: "補正ダメージ: ",
         actualResult: "実ダメージ: ",
         inputError: "数値を入力してください",
-        unit: " 兆"
+        unit: " 兆",
+        phActual: "例: 5",
+        phCorrected: "例: 2.3",
+        phLimit: "例: 0.0 ~ 3.0"
       },
       en: {
         title: "OPTC Damage Limit Calculator",
@@ -98,7 +105,10 @@
         correctedResult: "Corrected Damage: ",
         actualResult: "Actual Damage: ",
         inputError: "Please enter a number",
-        unit: " T"
+        unit: " T",
+        phActual: "e.g. 5",
+        phCorrected: "e.g. 2.3",
+        phLimit: "e.g. 0.0 ~ 3.0"
       }
     };
 
@@ -107,10 +117,18 @@
     function switchLang(lang) {
       currentLang = lang;
       localStorage.setItem("lang", lang);
+      // テキスト
       document.querySelectorAll("[data-i18n]").forEach(el => {
         const key = el.getAttribute("data-i18n");
         if (translations[lang][key]) {
           el.innerText = translations[lang][key];
+        }
+      });
+      // プレースホルダ
+      document.querySelectorAll("[data-i18n-placeholder]").forEach(el => {
+        const key = el.getAttribute("data-i18n-placeholder");
+        if (translations[lang][key]) {
+          el.placeholder = translations[lang][key];
         }
       });
     }
@@ -152,7 +170,7 @@
     document.getElementById('calcCorrectedBtn').addEventListener('click', () => {
       const actual = parseFloat(document.getElementById('actualInput').value);
       const limit = parseFloat(document.getElementById('limitInput1').value);
-      if (isNaN(actual) || isNaN(limit)) {
+      if (isNaN(actual) || isNaN(limit) || limit < 0 || limit > 3) {
         document.getElementById('correctedResult').innerText = translations[currentLang].inputError;
         return;
       }
@@ -164,7 +182,7 @@
     document.getElementById('calcActualBtn').addEventListener('click', () => {
       const corrected = parseFloat(document.getElementById('correctedInput').value);
       const limit = parseFloat(document.getElementById('limitInput2').value);
-      if (isNaN(corrected) || isNaN(limit)) {
+      if (isNaN(corrected) || isNaN(limit) || limit < 0 || limit > 3) {
         document.getElementById('actualResult').innerText = translations[currentLang].inputError;
         return;
       }
