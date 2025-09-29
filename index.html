@@ -14,7 +14,7 @@
       <button id="lang-en" class="px-3 py-1 border rounded">English</button>
     </div>
 
-    <h1 class="flex items-center justify-center text-2xl font-bold mb-6">
+    <h1 class="flex items-center justify-center text-2xl font-bold mb-6 leading-tight">
       <img src="damage-limit-break-icon.png" alt="icon" class="w-8 h-8 mr-2">
       <span data-i18n="title">OPTCダメージ補正計算ツール</span>
     </h1>
@@ -101,7 +101,7 @@
     // 辞書
     const translations = {
       ja: {
-        title: "トレクル ダメージ限界突破シミュレーター",
+        title: "トレクル<wbr>ダメージ限界突破<wbr>シミュレーター",
         correctedTab: "補正ダメージ計算",
         actualTab: "実ダメージ計算",
         inputActual: "実ダメージ（兆）",
@@ -150,7 +150,7 @@
       document.querySelectorAll("[data-i18n]").forEach(el => {
         const key = el.getAttribute("data-i18n");
         if (translations[lang][key]) {
-          el.innerText = translations[lang][key];
+          el.innerHTML = translations[lang][key];
         }
       });
       // プレースホルダ
